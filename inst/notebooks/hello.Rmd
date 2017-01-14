@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## The C code
 This is _hello.c_:
-
+```
     #include <R.h>
 
     void hello(int *n)
@@ -20,20 +20,34 @@ This is _hello.c_:
        Rprintf("Hello, world!\n");
     }
     }
-    
+```
+
 Compile from the terminal with:
 
     $ R CMD SHLIB hello.c
+    
+```{r}
+dir("../../src", pattern = "hello.*")
+```
+
+    
+```{r}
+system("R CMD SHLIB ../../src/hello.c")
+dir("../../src", pattern = "hello.*")
+```
 
 A file _hello.so_ will be generated.
 
 ## The wrapper
 We write an R function to wrap the loading and call to hello.so:
-```{r cars}
-dyn.load("src/hello.so")
+```{r}
+dyn.load("../../src/hello.dll")
+
 hello <- function(n) {
   .C("hello", as.integer(n))
 }
+
+hello(7)
 ```
 
 ## Calling from R

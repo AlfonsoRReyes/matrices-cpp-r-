@@ -1,0 +1,49 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+getwd()
+
+```
+
+
+
+
+## In Windows:
+
+Compile the C file:
+```{r}
+system("R CMD SHLIB ../../src/foo.c")
+dir("../../src", pattern = "foo.*")
+```
+
+Change the name of the dynamic library:
+
+```{r}
+system("R CMD SHLIB -o different_foo.dll foo.c")
+dir(pattern = "*foo.*")
+```
+
+Remove the files if want to start over:
+```{r}
+file.remove("foo.o", "foo.dll", "foo.so", "different_foo.dll")
+```
+
+```{r}
+dyn.load("foo.dll")
+
+foo <- function() {
+  result <- .C("foo", as.integer(3))
+  return(result$x)
+}
+
+foo()
+```
+
+```{r}
+foo()
+```
+

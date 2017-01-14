@@ -1,0 +1,47 @@
+---
+title: "hello.c"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## The C code
+This is _hello.c_:
+
+    #include <R.h>
+
+    void hello(int *n)
+    {
+    int i;
+    
+    for(i=0; i < *n; i++) {
+       Rprintf("Hello, world!\n");
+    }
+    }
+    
+Compile from the terminal with:
+
+    $ R CMD SHLIB hello.c
+
+A file _hello.so_ will be generated.
+
+## The wrapper
+We write an R function to wrap the loading and call to hello.so:
+```{r cars}
+dyn.load("src/hello.so")
+hello <- function(n) {
+  .C("hello", as.integer(n))
+}
+```
+
+## Calling from R
+
+From R:
+```{r, comment=NA}
+source("R/hello.R")     #: load the R wrapper
+hello(7)
+```
+
+

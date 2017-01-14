@@ -1,0 +1,51 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+The Source command both executes the sourceCpp function and monitors the results of the compilation for errors. If errors do occur then the gcc error log is parsed into a navigable list:
+
+```{r}
+library(Rcpp)
+
+sourceCpp("convolve.cpp")
+
+x <- matrix(rnorm(10))
+y <- matrix(rnorm(10))
+
+convolveCpp(x, y)
+```
+
+Note that you can also check the Source on Save option to automatically source the C++ file every time it is saved. This variation will keep the keyboard focus within the editor whereas the Source command will move focus to the console.
+
+
+
+## Inline
+
+```{r}
+library(inline)
+
+src <- '
+  Rcpp::NumericVector xa(a);
+  Rcpp::NumericVector xb(b);
+  int n_xa = xa.size(), n_xb = xb.size();
+  Rcpp::NumericVector xab(n_xa + n_xb - 1);
+
+ for (int i = 0; i < n_xa; i++)
+  for (int j = 0; j < n_xb; j++)
+    xab[i + j] += xa[i] * xb[j];
+ return xab;'
+```
+
+
+```{r}
+fun <- cxxfunction(signature(a = "numeric", b = "numeric"), src, plugin = "Rcpp")
+
+```
+
+```{r}
+fun(1:3, 1:4)
+```
+

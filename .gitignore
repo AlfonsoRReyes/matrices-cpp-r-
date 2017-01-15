@@ -5,3 +5,6 @@
 *.html
 _cache
 _files
+*.o
+*.dll
+*.so

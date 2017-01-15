@@ -26,22 +26,33 @@ Compile from the terminal with:
 
     $ R CMD SHLIB hello.c
     
-```{r}
-dir("../../src", pattern = "hello.*")
+```{r warning=FALSE}
+setwd(src)
+dir(pattern = "hello.*")
 ```
 
     
-```{r}
-system("R CMD SHLIB ../../src/hello.c")
-dir("../../src", pattern = "hello.*")
+```{r warning=FALSE}
+setwd(src)
+
+system("R CMD SHLIB hello.c")
+dir(pattern = "hello.*")
 ```
+
+
+```{r}
+getwd()
+```
+
 
 A file _hello.so_ will be generated.
 
 ## The wrapper
 We write an R function to wrap the loading and call to hello.so:
-```{r}
-dyn.load("../../src/hello.dll")
+```{r warning = FALSE}
+setwd(src)
+
+dyn.load("hello.dll")
 
 hello <- function(n) {
   .C("hello", as.integer(n))
@@ -50,11 +61,19 @@ hello <- function(n) {
 hello(7)
 ```
 
+
+```{r}
+setwd(src)
+file.remove("hello.dll", "hello.o")
+```
+
 ## Calling from R
 
 From R:
-```{r, comment=NA}
-source("R/hello.R")     #: load the R wrapper
+```{r, warning =FALSE}
+setwd(rdir)           # change folder where R scripts reside
+
+source("hello.R")     #: load the R wrapper
 hello(7)
 ```
 

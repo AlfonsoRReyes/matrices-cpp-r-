@@ -7,9 +7,10 @@ output: html_notebook
 
 The Source command both executes the sourceCpp function and monitors the results of the compilation for errors. If errors do occur then the gcc error log is parsed into a navigable list:
 
-```{r}
+```{r warning=FALSE}
 library(Rcpp)
 
+setwd(src)
 sourceCpp("convolve.cpp")
 
 x <- matrix(rnorm(10))
@@ -43,9 +44,8 @@ src <- '
 ```{r}
 fun <- cxxfunction(signature(a = "numeric", b = "numeric"), src, plugin = "Rcpp")
 
-```
-
-```{r}
 fun(1:3, 1:4)
 ```
+
+
 

@@ -3,6 +3,21 @@ title: "rcconv compile C code"
 output: html_notebook
 ---
 
+Load these functions first. They will compile and load.
+
+```{r}
+cLoad <- function(cFile) {
+  setwd(src)
+  if (.Platform$OS.type == "windows") dyn.load(paste(cFile, "dll", sep = "."))
+  if (.Platform$OS.type == "unix")    dyn.load(paste(cFile, "so", sep = "."))
+}
+
+cCompile <- function(cFilec) {
+  setwd(src)
+  system(paste("R CMD SHLIB", cFilec))
+}
+```
+
 
 "Observe that we convert all arguments to the approriate type (just to be sure). The .C function returns a list with all its arguments, we only need the last (fourth) argument. In this case we did not name the last argument but extracted it using a numeric index. Whether one uses named arguments (as in Section 5.1) or numeric indices is a matter of personal preference."
 
@@ -49,16 +64,4 @@ rconv(1, x)
 
 
 
-```{r}
-cLoad <- function(cFile) {
-  setwd(src)
-  if (.Platform$OS.type == "windows") dyn.load(paste(cFile, "dll", sep = "."))
-  if (.Platform$OS.type == "unix")    dyn.load(paste(cFile, "so", sep = "."))
-}
-
-cCompile <- function(cFilec) {
-  setwd(src)
-  system(paste("R CMD SHLIB", cFilec))
-}
-```
 

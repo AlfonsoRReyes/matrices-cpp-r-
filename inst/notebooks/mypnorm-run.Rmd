@@ -30,9 +30,10 @@ head(res)
 ## Using Cpp file
 ANother way to run this is by placing the Cpp code in a separate file:
 
-```{r}
+```{r warning=FALSE}
 library(Rcpp)
 
+setwd(src)
 sourceCpp("mypnorm.cpp")
 
 x <- seq(0, 1, length=1e3)
@@ -40,7 +41,5 @@ res <- mypnormCpp(x)
 head(res)
 ```
 
-```{r}
 
-```
 

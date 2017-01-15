@@ -13,7 +13,7 @@ Let's see how `Rcpp` and `Armadillo` perform on this task.
 
 ```{r engine='Rcpp'}
 #include <RcppArmadillo.h>
-// [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::depends(RcppArmadillo)]]`````
 
 using namespace Rcpp;
 
@@ -25,15 +25,13 @@ arma::mat mvrnormArma(int n, arma::vec mu, arma::mat sigma) {
 }
 ```
 
-```{r}
-getwd()
-```
 
 Loading code from a C++ file:
 
 ```{r}
 library(Rcpp)
-sourceCpp("../../src/mvrnormArma.cpp")
+setwd(src)
+sourceCpp("mvrnormArma.cpp")
 mvrnormArma2 <- mvrnormArmaCpp(1e4, mu, sigma)
 
 ```

@@ -1,3 +1,5 @@
 RPROJ <- list(PROJHOME = normalizePath(getwd()))
 attach(RPROJ)
+src  <- paste(PROJHOME, "src", sep = "/")
+rdir <- paste(PROJHOME, "R", sep = "/")
 rm(RPROJ)

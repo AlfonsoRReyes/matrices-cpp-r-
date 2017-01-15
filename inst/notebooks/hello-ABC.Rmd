@@ -1,0 +1,63 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r warning=FALSE}
+setwd(src)
+system("R CMD SHLIB helloA.c")
+system("R CMD SHLIB helloB.c")
+system("R CMD SHLIB helloC.c")
+```
+
+
+```{r warning=FALSE}
+# Wrapper function to invoke "helloA" at the shell.
+helloA <- function() {
+  setwd(src)
+  if (.Platform$OS.type == "windows") dyn.load("helloA.dll")
+  if (.Platform$OS.type == "unix")    dyn.load("helloA.so")
+   .C("main")
+}
+
+helloA()
+```
+
+
+```{r warning=FALSE}
+# Wrapper function to invoke "helloA" at the shell.
+helloB <- function() {
+  setwd(src)
+  if (.Platform$OS.type == "windows") dyn.load("helloB.dll")
+  if (.Platform$OS.type == "unix")    dyn.load("helloB.so")
+  
+  result <- .C("helloB", greeting="")
+  
+  return(result$greeting)
+}
+
+helloB()
+```
+
+
+```{r warning=FALSE}
+
+#Wrapper function to invoke helloC with two arguments
+helloC <- function(greeting) {
+  setwd(src)
+  if (.Platform$OS.type == "windows") dyn.load("helloC.dll")
+  if (.Platform$OS.type == "unix")    dyn.load("helloC.so")
+  
+  if (!is.character(greeting)) {
+    stop("Argument 'greeting' must be of type 'character'.")
+  }
+  result <- .C("helloC",
+               greeting=greeting,
+               count=as.integer(1))
+  return(result$count)
+}
+
+helloC("Good Evening!")
+```
+

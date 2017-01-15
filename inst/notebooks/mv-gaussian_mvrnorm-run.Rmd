@@ -25,6 +25,20 @@ arma::mat mvrnormArma(int n, arma::vec mu, arma::mat sigma) {
 }
 ```
 
+```{r}
+getwd()
+```
+
+Loading code from a C++ file:
+
+```{r}
+library(Rcpp)
+sourceCpp("../../src/mvrnormArma.cpp")
+mvrnormArma2 <- mvrnormArmaCpp(1e4, mu, sigma)
+
+```
+
+
 
 The easiest way to perform a Cholesky distribution in R is to use  the ``chol`` function in `R` which interface some fast `LAPACK` routines.
 
@@ -66,6 +80,7 @@ require(rbenchmark)
 benchmark(mvrnormR(1e4, mu, sigma),
           MASS::mvrnorm(1e4, mu, sigma),
           mvrnormArma(1e4, mu, sigma),
+          mvrnormArmaCpp(1e4, mu, sigma),
           columns = c('test', 'replications', 'relative', 'elapsed'),
           order = 'elapsed')
 ```

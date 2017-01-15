@@ -1,0 +1,25 @@
+---
+title: "Rcpp sourceCpp meanC.cpp"
+output: html_notebook
+---
+
+Running and testing from the same Cpp file:
+```{r}
+library(Rcpp)
+
+setwd(src)
+sourceCpp("meanC.cpp")
+
+```
+
+Testing from R:
+```{r}
+library(microbenchmark)
+
+x <- runif(1e5)
+microbenchmark(
+  mean(x),
+  meanC(x)
+)
+```
+

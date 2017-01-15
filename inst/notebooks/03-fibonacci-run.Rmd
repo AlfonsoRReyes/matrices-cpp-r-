@@ -4,10 +4,11 @@ output: html_notebook
 ---
 
 
-```{r}
+```{r warning=FALSE}
 library(Rcpp)
 
-sourceCpp("../../src/fibonacci.cpp")
+setwd(src)
+sourceCpp("fibonacci.cpp")
 ```
 
 

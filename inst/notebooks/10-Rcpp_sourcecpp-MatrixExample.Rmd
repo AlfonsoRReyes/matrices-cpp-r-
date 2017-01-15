@@ -1,0 +1,18 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(Rcpp)
+
+setwd(src)
+sourceCpp("matrixexample.cpp")
+
+```
+
+```{r}
+M <- matrix( (1:16)^2, 4 )
+MatrixExample(M)
+```
+

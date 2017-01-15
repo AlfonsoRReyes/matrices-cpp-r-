@@ -1,0 +1,26 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(Rcpp)
+
+setwd(src)
+sourceCpp("transpose.cpp")
+```
+
+```{r}
+setwd(src)
+system("R CMD SHLIB transpose.cpp")
+```
+
+```{r}
+setwd(src)
+dyn.load("transpose.so")
+```
+
+```{r}
+main()
+```
+

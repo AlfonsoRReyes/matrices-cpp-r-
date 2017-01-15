@@ -1,0 +1,64 @@
+---
+title: "rcconv compile C code"
+output: html_notebook
+---
+
+
+"Observe that we convert all arguments to the approriate type (just to be sure). The .C function returns a list with all its arguments, we only need the last (fourth) argument. In this case we did not name the last argument but extracted it using a numeric index. Whether one uses named arguments (as in Section 5.1) or numeric indices is a matter of personal preference."
+
+With a little bit more trouble we can vectorize this, 
+i.e. make it accept a vector of lags and return a vector of 
+convolutions of the same length. The C code now becomes:
+
+
+```{r warning=FALSE}
+# wrapper function to invoke cconv 
+
+rconv <- function(lag, x) {
+  cCompile("cconv.c")
+  cLoad("cconv")
+  
+ result <- .C("cconv",
+  as.integer(lag),
+  as.double(x),
+  as.integer(length(x)),
+  as.double(0.0))[[4]]
+ return(result)
+}
+
+x <- rnorm(100)
+rconv(0, x)
+```
+
+```{r warning=FALSE}
+rconv2 <- function(lag, x) {
+  cCompile("cconv2.c")
+  cLoad("cconv2")
+  
+  .C("cconv2",
+  as.integer(lag),
+  as.integer(length(lag)),
+  as.double(x),
+  as.integer(length(x)),
+  as.double(vector("double",length(lag))))[[5]]
+}
+
+x <- rnorm(100)
+rconv(1, x)
+```
+
+
+
+```{r}
+cLoad <- function(cFile) {
+  setwd(src)
+  if (.Platform$OS.type == "windows") dyn.load(paste(cFile, "dll", sep = "."))
+  if (.Platform$OS.type == "unix")    dyn.load(paste(cFile, "so", sep = "."))
+}
+
+cCompile <- function(cFilec) {
+  setwd(src)
+  system(paste("R CMD SHLIB", cFilec))
+}
+```
+

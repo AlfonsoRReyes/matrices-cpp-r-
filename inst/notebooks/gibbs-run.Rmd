@@ -3,10 +3,12 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r}
+```{r warning=FALSE}
 library(Rcpp)
 
+setwd(src)
 sourceCpp("gibbs.cpp")
+
 gibbs(100, 10)
 ```
 

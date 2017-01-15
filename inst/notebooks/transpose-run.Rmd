@@ -21,6 +21,7 @@ dyn.load("transpose.so")
 ```
 
 ```{r}
-main()
+setwd(src)
+system("./transpose")
 ```
 

@@ -42,8 +42,8 @@ helloB()
 
 
 ```{r warning=FALSE}
-
 #Wrapper function to invoke helloC with two arguments
+
 helloC <- function(greeting) {
   setwd(src)
   if (.Platform$OS.type == "windows") dyn.load("helloC.dll")

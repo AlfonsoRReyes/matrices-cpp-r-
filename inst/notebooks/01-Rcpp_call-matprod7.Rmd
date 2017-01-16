@@ -1,0 +1,10 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+setwd(src)
+system("R CMD SHLIB matprod7.cpp")
+```
+

@@ -1,0 +1,31 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Using Rcpp together with inline:
+
+```{r}
+src <- '
+   double x = as<double>(x_);
+   double ans=1.0, term=1.0, eps=1e-16;
+   int n=0;
+   while (fabs(term)>eps) {
+    n++;
+     term = term * x / n;
+     ans = ans + term;
+   }
+   return(wrap(ans));'
+```
+
+Compiling, linking and loading is done with one function call:
+```{r}
+library(inline)
+expfunC <- cxxfunction(signature(x_="numeric"), plugin="Rcpp", body=src)
+```
+
+```{r}
+expfunC(5)
+```
+
+R data object (SEXPs) converted to C++ objects with as() C++ data object converted R data objects (SEXPs) with wrap(),

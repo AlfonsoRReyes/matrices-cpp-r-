@@ -10,4 +10,3 @@ _files
 *.so
 *.exe
 /.project
-src/helloC.o
